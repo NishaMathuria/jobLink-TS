@@ -19,22 +19,51 @@ router.get(
   },
 );
 
+// for GET request Employee by Id
+router.get(
+  "/employee/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const _id = req.params.id;
+
+    Employee.findOne({_id})
+      .then((employee: any) => {
+        res.send({ employee });
+      })
+      .catch(next);
+  },
+);
+
+// for GET request Project by Id
+router.get(
+  "/project/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const _id = req.params.id;
+
+    Project.findOne({_id})
+      .then((project: any) => {
+        res.send({ project });
+      })
+      .catch(next);
+  },
+);
+
 // for POST request (add new employee in the database)
 router.post(
   "/newEmployee",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log(req.body);
       const {
         firstName,
         lastName,
         phoneNumber,
         email,
-        certificate,
+        docFile,
         welder,
         fitter,
         rigger,
         sacffolder,
-        instructionTech,
+        instrumentTech,
         election,
         mechanic,
         craneOperator,
@@ -46,12 +75,12 @@ router.post(
           lastName &&
           phoneNumber &&
           email &&
-          certificate &&
           welder &&
           fitter &&
           rigger &&
           sacffolder &&
-          instructionTech &&
+          instrumentTech &&
+          docFile &&
           election &&
           mechanic &&
           craneOperator
@@ -65,12 +94,12 @@ router.post(
         lastName,
         phoneNumber,
         email: email.toLowerCase(),
-        certificate,
+        certificate: docFile,
         welder,
         fitter,
         rigger,
         sacffolder,
-        instructionTech,
+        instrumentTech,
         election,
         mechanic,
         craneOperator,
@@ -79,7 +108,7 @@ router.post(
       const token = jwt.sign({ employee_id: employee._id }, "joblink");
 
       // employee.token = token;
-      res.status(201).send({ employee, token });
+      res.status(200).send({ employee, token });
     } catch (err) {
       console.log(err);
     }
@@ -164,6 +193,7 @@ router.post(
   "/newProject",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log(req.body)
       // get use input
       const {
         projectTitle,
@@ -179,17 +209,17 @@ router.post(
       // validation
       if (
         !(
-          projectTitle &&
-          projectDescription &&
-          startDate &&
-          endDate &&
-          projectLocation &&
-          selectSupervisor &&
-          expectedMember &&
+          projectTitle ||
+          projectDescription ||
+          startDate ||
+          endDate ||
+          projectLocation ||
+          selectSupervisor ||
+          expectedMember ||
           addUser
         )
       ) {
-        res.status(400).send("All input is required");
+        return res.status(400).send("All input is required");
       }
 
       // create project in database
@@ -197,6 +227,7 @@ router.post(
         projectTitle,
         projectDescription,
         startDate,
+        endDate,
         projectLocation,
         selectSupervisor,
         expectedMember,
