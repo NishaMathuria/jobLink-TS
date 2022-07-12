@@ -13,6 +13,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     Employee.find({})
       .then((employees: any) => {
+        console.log(employees,'ff')
         res.send({ employees });
       })
       .catch(next);

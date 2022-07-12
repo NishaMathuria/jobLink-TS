@@ -15,7 +15,7 @@ const options: cors.CorsOptions = {
   origin: true,
 };
 // to connect the mongodb
-mongoose.connect("mongodb://localhost/joblink").then(() => {
+mongoose.connect("mongodb://localhost:27017/joblink").then(() => {
   console.log("connected");
 });
 app.use(cors(options));
