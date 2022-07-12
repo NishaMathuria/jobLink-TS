@@ -7,16 +7,18 @@ import express, {
   ErrorRequestHandler,
 } from "express";
 import mongoose from "mongoose";
-import Employee from "./model/emplyee";
-import Project from "./model/project";
+import cors from "cors";
 import apiRoutes from "./routers/api";
 
 const app: Application = express(); // set up for express
-
+const options: cors.CorsOptions = {
+  origin: true,
+};
 // to connect the mongodb
 mongoose.connect("mongodb://localhost/joblink").then(() => {
   console.log("connected");
 });
+app.use(cors(options));
 app.use(express.static("public"));
 mongoose.Promise = global.Promise;
 app.use(express.json());

@@ -9,7 +9,7 @@ export interface EmployeeDocument extends Document {
   fitter: string;
   rigger: string;
   sacffolder: string;
-  instructionTech: string;
+  instrumentTech: string;
   election: string;
   mechanic: string;
   craneOperator: string;
@@ -53,7 +53,7 @@ const EmployeeSchema = new Schema({
     type: String,
     required: true,
   },
-  instructionTech: {
+  instrumentTech: {
     type: String,
     required: true,
   },
