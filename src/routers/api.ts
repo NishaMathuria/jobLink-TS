@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 import express, { Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
-import Employee, { EmployeeDocument } from "../model/emplyee";
-import Project, { ProjectDocument } from "../model/project";
+import Employee from "../model/emplyee";
+import Project from "../model/project";
 
 const router = express.Router();
 // ------------------ employee -------------------------
@@ -10,7 +9,7 @@ const router = express.Router();
 // for GET request (get the list of employee database)
 router.get(
   "/employee",
-  async (req: Request, res: Response, next: NextFunction) => {
+  (req: Request, res: Response, next: NextFunction) => {
     Employee.find({})
       .then((employees: any) => {
         console.log(employees,'ff')
@@ -23,7 +22,7 @@ router.get(
 // for GET request Employee by Id
 router.get(
   "/employee/:id",
-  async (req: Request, res: Response, next: NextFunction) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const _id = req.params.id;
 
     Employee.findOne({_id})
@@ -34,19 +33,6 @@ router.get(
   },
 );
 
-// for GET request Project by Id
-router.get(
-  "/project/:id",
-  async (req: Request, res: Response, next: NextFunction) => {
-    const _id = req.params.id;
-
-    Project.findOne({_id})
-      .then((project: any) => {
-        res.send({ project });
-      })
-      .catch(next);
-  },
-);
 
 // for POST request (add new employee in the database)
 router.post(
@@ -105,11 +91,7 @@ router.post(
         mechanic,
         craneOperator,
       });
-
-      const token = jwt.sign({ employee_id: employee._id }, "joblink");
-
-      // employee.token = token;
-      res.status(200).send({ employee, token });
+      res.status(200).send({ employee });
     } catch (err) {
       console.log(err);
     }
@@ -117,47 +99,11 @@ router.post(
 );
 
 // for PUT request (update of employee in the database)
-router.patch("/employee/:id", async (req, res, next) => {
+router.patch("/employee/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
     await Employee.findOneAndUpdate({ _id: req.params.id }, req.body);
     const employee = await Employee.findOne({ _id: req.params.id });
     res.send({ employee });
-    // const employee_id = req.params.id;
-
-    // const updates = Object.keys(req.body);
-    // const allowedUpdates = [
-    //   "firstName",
-    //   "lastName",
-    //   "phoneNumber",
-    //   "email",
-    //   "certificate",
-    //   "welder",
-    //   "fitter",
-    //   "rigger",
-    //   "sacffolder",
-    //   "instructionTech",
-    //   "election",
-    //   "mechanic",
-    //   "craneOperator",
-    // ];
-    // const isValidOperation = updates.every((update) =>
-    //   allowedUpdates.includes(update),
-    // );
-    // if (!isValidOperation) {
-    //   res.status(400).send({ error: "Invalid request" });
-    // }
-
-    // if (!mongoose.Types.ObjectId.isValid(employee_id)) {
-    //   return res.status(404).send();
-    // }
-    // const employee: EmployeeDocument = await Employee.findOne({
-    //   _id: employee_id,
-    // });
-    // console.log(typeof employee);
-
-    // updates.forEach((update) => (employee[update] = req.body[update]));
-    // await employee?.save();
-    // res.send(employee);
   } catch (error) {
     console.log(error);
     res.status(400).send();
@@ -165,7 +111,7 @@ router.patch("/employee/:id", async (req, res, next) => {
 });
 
 // for DELETE request (delete the employee in the database)
-router.delete("/employee/:id", async (req, res, next) => {
+router.delete("/employee/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const employee = await Employee.findOneAndDelete({ _id: req.params.id });
     await employee.remove();
@@ -180,10 +126,24 @@ router.delete("/employee/:id", async (req, res, next) => {
 // for GET request (get the list of project database)
 router.get(
   "/project",
-  async (req: Request, res: Response, next: NextFunction) => {
+   (req: Request, res: Response, next: NextFunction) => {
     Project.find({})
       .then((projects: any) => {
         res.send({ projects });
+      })
+      .catch(next);
+  },
+);
+
+// for GET request Project by Id
+router.get(
+  "/project/:id",
+  (req: Request, res: Response, next: NextFunction) => {
+    const _id = req.params.id;
+
+    Project.findOne({_id})
+      .then((project: any) => {
+        res.send({ project });
       })
       .catch(next);
   },

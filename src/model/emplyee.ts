@@ -1,19 +1,5 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model } from "mongoose";
 
-export interface EmployeeDocument extends Document {
-  firstName: string;
-  lastName: string;
-  phoneNumber: number;
-  email: string;
-  welder: string;
-  fitter: string;
-  rigger: string;
-  sacffolder: string;
-  instrumentTech: string;
-  election: string;
-  mechanic: string;
-  craneOperator: string;
-}
 // employee schema & modal
 const EmployeeSchema = new Schema({
   firstName: {

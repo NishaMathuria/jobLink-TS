@@ -1,18 +1,4 @@
-import { Schema, model, Date, Document } from "mongoose";
-
-export interface ProjectDocument extends Document {
-  projectTitle: string;
-  projectDescription: string;
-  startDate: Date;
-  endDate: Date;
-  projectLocation: string;
-  selectSupervisor: string;
-  rigger: string;
-  sacffolder: string;
-  instructionTech: string;
-  expectedMember: string;
-  addUser: string;
-}
+import { Schema, model } from "mongoose";
 
 const ProjectSchema = new Schema({
   projectTitle: {

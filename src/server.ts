@@ -1,9 +1,6 @@
 // const { useColors } = require('debug/src/browser');
 import express, {
   Application,
-  Request,
-  Response,
-  NextFunction,
   ErrorRequestHandler,
 } from "express";
 import mongoose from "mongoose";
@@ -20,15 +17,8 @@ mongoose.connect("mongodb://localhost:27017/joblink").then(() => {
 });
 app.use(cors(options));
 app.use(express.static("public"));
-mongoose.Promise = global.Promise;
 app.use(express.json());
 
-const db = mongoose.connection; // it show the message in the terminal
-
-app.post("/joblink/create-project", async (req, res) => {
-  console.log(req.body);
-  res.json({ status: "ok" });
-});
 
 // routes
 app.use("/api", apiRoutes);
@@ -42,10 +32,3 @@ app.use(errorHandler);
 
 // listen for request
 app.listen(4000, () => console.log("Server Started at 4000"));
-
-// app.get('/api/project', (req,res) => {
-//     database.collection('project').find({}).toArray((err,result) => {
-//         if(err) throw err
-//         res.send(result)
-//     })
-// })
