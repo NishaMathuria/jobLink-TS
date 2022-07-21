@@ -22,17 +22,19 @@ const ProjectSchema = new Schema({
     require: true,
   },
   selectSupervisor: {
-    type: String,
-    require: true,
+    type: Schema.Types.ObjectId,
+    ref: "Employee",
   },
   expectedMember: {
     type: String,
     require: true,
   },
-  addUser: {
-    type: String,
-    require: true,
-  },
+  addUser: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Employee",
+    },
+  ],
 });
 
 const Project = model("Project", ProjectSchema);

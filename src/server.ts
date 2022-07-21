@@ -1,7 +1,7 @@
-// const { useColors } = require('debug/src/browser');
 import express, {
   Application,
   ErrorRequestHandler,
+  NextFunction,
 } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -24,7 +24,7 @@ app.use(express.json());
 app.use("/api", apiRoutes);
 
 // for error handling
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+const errorHandler: ErrorRequestHandler = (err, req, res) => {
   console.log(err);
   res.status(422).send({ error: err.message });
 };

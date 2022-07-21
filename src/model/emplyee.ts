@@ -39,7 +39,7 @@ const EmployeeSchema = new Schema({
     type: String,
     required: true,
   },
-  instrumentTech: {
+  instructionTech: {
     type: String,
     required: true,
   },
