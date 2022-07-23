@@ -19,14 +19,13 @@ app.use(cors(options));
 app.use(express.static("public"));
 app.use(express.json());
 
-
 // routes
 app.use("/api", apiRoutes);
 
 // for error handling
-const errorHandler: ErrorRequestHandler = (err, req, res) => {
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   console.log(err);
-  res.status(422).send({ error: err.message });
+  res.status(200).send({ error: err.message });
 };
 app.use(errorHandler);
 

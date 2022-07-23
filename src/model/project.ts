@@ -1,6 +1,10 @@
 import { Schema, model } from "mongoose";
 
 const ProjectSchema = new Schema({
+  status: {
+    type: Number,
+    require: true,
+  },
   projectTitle: {
     type: String,
     require: true,

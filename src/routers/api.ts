@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import Employee from "../model/emplyee";
 import Project from "../model/project";
 import mongoose from "mongoose";
+import moment from "moment";
 
 const router = express.Router();
 // ------------------ employee -------------------------
@@ -132,7 +133,9 @@ router.delete(
 
 // for GET request (get the list of project database)
 router.get("/project", (req: Request, res: Response, next: NextFunction) => {
-  Project.find({})
+  console.log(+req.query.status);
+  let status = +req.query.status | 0;
+  Project.find({ status })
     .sort({ _id: -1 })
     .populate("selectSupervisor")
     .then((projects: any) => {
@@ -191,8 +194,18 @@ router.post(
         return res.status(400).send("All input is required");
       }
 
+      // check the start date with the current date
+
+      let status = 0;
+      if (moment().isAfter(startDate, "dates")) {
+        status = 1;
+      } else if (moment().isBefore(startDate, "dates")) {
+        status = 2;
+      }
+
       // create project in database
       const project = await Project.create({
+        status,
         projectTitle,
         projectDescription,
         startDate,
@@ -204,7 +217,7 @@ router.post(
       });
 
       // return new project
-      res.status(201).json(project);
+      res.status(200).json(project);
     } catch (err) {
       console.log(err);
     }
