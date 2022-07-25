@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import Employee from "../model/emplyee";
 import Project from "../model/project";
-import mongoose from "mongoose";
+import mongoose, { ObjectId, Schema } from "mongoose";
 import moment from "moment";
 
 const router = express.Router();
@@ -87,12 +87,17 @@ router.post(
         mechanic,
         craneOperator,
       });
+      // print Employee
+      console.log(employee);
+      const employeeId: any = new mongoose.Types.ObjectId(employee._id);
+      
       // add created user to project addUser array
-      // const employeeId = new mongoose.Types.ObjectId(employee._id);
-      // await Project.updateOne(
-      //   { _id: req.body.projectId },
-      //   { $push: { addUser: "" } },
-      // );
+      const project = await Project.findOne(
+        { _id: req.body.projectId }
+      );
+      project.addUser.push(employeeId)
+      await project.save();
+      
       res.status(200).send({ employee });
     } catch (err) {
       console.log(err);
