@@ -97,7 +97,7 @@ router.post(
       );
       project.addUser.push(employeeId)
       await project.save();
-      
+
       res.status(200).send({ employee });
     } catch (err) {
       console.log(err);
@@ -138,8 +138,8 @@ router.delete(
 
 // for GET request (get the list of project database)
 router.get("/project", (req: Request, res: Response, next: NextFunction) => {
-  console.log(+req.query.status);
-  let status = +req.query.status | 0;
+  // console.log(+req.query.status);
+  let status = +req.query.status; 
   Project.find({ status })
     .sort({ _id: -1 })
     .populate("selectSupervisor")
